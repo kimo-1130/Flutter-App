@@ -3,16 +3,13 @@ import 'package:flutter/material.dart'; // لاستيراد مكتبة واجه�
 // تعريف واجهة الإعدادات كـ StatelessWidget لأنها لا تحتاج إلى تغيير الحالة
 class SettingsScreen extends StatelessWidget {
   final Function toggleTheme; // دالة لتبديل الثيم (ليلي/نهاري)
-  final Function changeLanguage; // دالة لتغيير اللغة
   final bool isDarkMode; // حالة الثيم (ليلي/نهاري)
-  final String currentLanguage; // اللغة الحالية
+  final String currentLanguage = "ar"; // اللغة الحالية
 
   const SettingsScreen({
     super.key,
     required this.toggleTheme,
-    required this.changeLanguage,
     required this.isDarkMode,
-    required this.currentLanguage,
   });
 
   @override
@@ -54,11 +51,7 @@ class SettingsScreen extends StatelessWidget {
               subtitle: Text(currentLanguage == "ar"
                   ? "العربية"
                   : "English"), // النص الفرعي بناءً على اللغة
-              onTap: () {
-                changeLanguage(currentLanguage == "ar"
-                    ? "en"
-                    : "ar"); // استدعاء دالة تغيير اللغة عند الضغط على العنصر
-              },
+              onTap: () {},
             ),
             const Divider(), // فاصل بين العناصر
             // عنصر إعدادات الحساب
@@ -67,7 +60,8 @@ class SettingsScreen extends StatelessWidget {
                   ? "إعدادات الحساب"
                   : "Account Settings"), // نص العنوان بناءً على اللغة
               onTap: () {
-                Navigator.pushNamed(context, '/accountSettings'); // الانتقال إلى واجهة إعدادات الحساب
+                Navigator.pushNamed(context,
+                    '/accountSettings'); // الانتقال إلى واجهة إعدادات الحساب
               },
             ),
           ],

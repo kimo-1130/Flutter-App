@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  final VoidCallback toggleTheme;
-  final bool isDarkMode;
+  final Function(Map<String, String>) toggleFavorite;
+  final List<Map<String, String>> favorites;
 
   const HomeScreen({
     Key? key,
-    required this.toggleTheme,
-    required this.isDarkMode,
+    required this.toggleFavorite,
+    required this.favorites,
   }) : super(key: key);
 
   @override
@@ -15,131 +15,55 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-  final List<Map<String, String>> destinations = [
-    {'title': 'Tokyo', 'image': 'assets/images/tokyo.jpg'},
-    {'title': 'Thailand', 'image': 'assets/images/thailand.jpg'},
-    {'title': 'Africa', 'image': 'assets/images/africa.jpg'},
-    {'title': 'France', 'image': 'assets/images/france.jpg'},
-    {'title': 'India', 'image': 'assets/images/india.jpg'},
-  ];
-
-  void _onItemTapped(int index) {
-    if (index == 1) {
-      Navigator.pushNamed(context, '/gallery');
-    } else if (index == 2) {
-      Navigator.pushNamed(context, '/notifications');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = widget.isDarkMode;
+    final List<Map<String, String>> destinations = [
+      {'title': 'Tokyo', 'image': 'assets/images/tokyo.jpg'},
+      {'title': 'Thailand', 'image': 'assets/images/thailand.jpg'},
+      {'title': 'Africa', 'image': 'assets/images/africa.jpg'},
+      {'title': 'France', 'image': 'assets/images/france.jpg'},
+      {'title': 'India', 'image': 'assets/images/india.jpg'},
+    ];
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: theme.scaffoldBackgroundColor,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
-            onPressed: widget.toggleTheme,
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-              ),
-              child: Text(
-                "Menu",
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  color: Colors.white,
-                ),
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Popular places",
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
             ),
-            ListTile(
-              leading: Icon(Icons.settings, color: theme.colorScheme.primary),
-              title: Text(
-                "Settings",
-                style: theme.textTheme.bodyLarge,
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, '/settings');
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 250,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: destinations.length,
+              itemBuilder: (context, index) {
+                return _buildDestinationCard(
+                  theme,
+                  destinations[index]['title']!,
+                  destinations[index]['image']!,
+                );
               },
             ),
-            ListTile(
-              leading: Icon(Icons.person, color: theme.colorScheme.primary),
-              title: Text(
-                "Account Settings",
-                style: theme.textTheme.bodyLarge,
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, '/accountSettings');
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Popular places",
-              style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              height: 250,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: destinations.length,
-                itemBuilder: (context, index) {
-                  return _buildDestinationCard(
-                    theme,
-                    destinations[index]['title']!,
-                    destinations[index]['image']!,
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: theme.colorScheme.primary),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.image, color: theme.colorScheme.primary),
-            label: "Places",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications, color: theme.colorScheme.primary),
-            label: "Notifications",
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: theme.colorScheme.primary,
-        unselectedItemColor: theme.colorScheme.onSurface,
-        backgroundColor: theme.scaffoldBackgroundColor,
-        onTap: _onItemTapped,
       ),
     );
   }
 
   Widget _buildDestinationCard(
       ThemeData theme, String title, String imagePath) {
+    final destination = {'title': title, 'image': imagePath};
+    final isFavorite = widget.favorites.any((fav) =>
+        fav['title'] == destination['title'] &&
+        fav['image'] == destination['image']);
+
     return Container(
       width: 200,
       margin: const EdgeInsets.only(right: 12),
@@ -152,6 +76,21 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Image.asset(
                 imagePath,
                 fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.red : Colors.white,
+                ),
+                onPressed: () {
+                  setState(() {
+                    widget.toggleFavorite(destination);
+                  });
+                },
               ),
             ),
             Positioned(

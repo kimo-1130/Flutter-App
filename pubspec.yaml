@@ -18,6 +18,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.5 # تم تحديثه إلى إصدار أحدث
   google_mobile_ads: ^2.0.0
+  curved_navigation_bar: ^1.0.3
 
 # الحزم المستخدمة أثناء التطوير
 dev_dependencies:

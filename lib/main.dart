@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -5,6 +6,7 @@ import 'screens/home_screen.dart';
 import 'screens/gallery_screen.dart';
 import 'screens/notification_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/favorites_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +21,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isDarkMode = false;
-  String currentLanguage = "ar";
+  int _selectedIndex = 0;
+  final List<Map<String, String>> favorites = [];
 
   void toggleTheme() {
     setState(() {
@@ -27,16 +30,28 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void changeLanguage(String language) {
+  void _onItemTapped(int index) {
     setState(() {
-      currentLanguage = language;
+      _selectedIndex = index;
+    });
+  }
+
+  void _toggleFavorite(Map<String, String> destination) {
+    setState(() {
+      if (favorites
+          .any((favorite) => favorite['title'] == destination['title'])) {
+        favorites.removeWhere(
+            (favorite) => favorite['title'] == destination['title']);
+      } else {
+        favorites.add(destination);
+      }
     });
   }
 
   ThemeData getTheme() {
     if (isDarkMode) {
       return ThemeData.dark().copyWith(
-        primaryColor: Colors.black,
+        primaryColor: Colors.blue,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.black,
           elevation: 0,
@@ -54,7 +69,7 @@ class _MyAppState extends State<MyApp> {
       );
     } else {
       return ThemeData.light().copyWith(
-        primaryColor: Colors.white,
+        primaryColor: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
@@ -67,7 +82,7 @@ class _MyAppState extends State<MyApp> {
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.black,
+          selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey[600],
         ),
       );
@@ -76,6 +91,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _screens = [
+      HomeScreen(toggleFavorite: _toggleFavorite, favorites: favorites),
+      GalleryScreen(),
+      FavoritesScreen(favorites: favorites),
+      const NotificationScreen(),
+    ];
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: getTheme(),
@@ -89,17 +111,79 @@ class _MyAppState extends State<MyApp> {
               toggleTheme: toggleTheme,
               isDarkMode: isDarkMode,
             ),
-        '/home': (context) => HomeScreen(
-              toggleTheme: toggleTheme,
-              isDarkMode: isDarkMode,
+        '/home': (context) => Scaffold(
+              appBar: AppBar(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0,
+                actions: [
+                  IconButton(
+                    icon: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
+                    onPressed: toggleTheme,
+                  ),
+                ],
+              ),
+              drawer: Drawer(
+                child: ListView(
+                  children: [
+                    DrawerHeader(
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                      ),
+                      child: Text(
+                        "Menu",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.settings, color: Colors.blue),
+                      title: Text(
+                        "Settings",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/settings');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.person, color: Colors.blue),
+                      title: Text(
+                        "Account Settings",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/accountSettings');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              body: _screens[_selectedIndex],
+              bottomNavigationBar: CurvedNavigationBar(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                color: Colors.blue,
+                buttonBackgroundColor: Theme.of(context).colorScheme.secondary,
+                height: 60,
+                items: const <Widget>[
+                  Icon(Icons.home, size: 30, color: Colors.white),
+                  Icon(Icons.image, size: 30, color: Colors.white),
+                  Icon(Icons.favorite, size: 30, color: Colors.white),
+                  Icon(Icons.notifications, size: 30, color: Colors.white),
+                ],
+                onTap: _onItemTapped,
+                animationDuration: const Duration(milliseconds: 300),
+                animationCurve: Curves.easeInOut,
+              ),
             ),
         '/gallery': (context) => GalleryScreen(),
         '/notifications': (context) => const NotificationScreen(),
         '/settings': (context) => SettingsScreen(
               toggleTheme: toggleTheme,
-              changeLanguage: changeLanguage,
               isDarkMode: isDarkMode,
-              currentLanguage: currentLanguage,
             ),
       },
     );
