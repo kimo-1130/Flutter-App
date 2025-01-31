@@ -94,7 +94,7 @@ class _MyAppState extends State<MyApp> {
     final List<Widget> _screens = [
       HomeScreen(toggleFavorite: _toggleFavorite, favorites: favorites),
       GalleryScreen(toggleFavorite: _toggleFavorite, favorites: favorites),
-      FavoritesScreen(favorites: favorites),
+      FavoritesScreen(favorites: favorites, toggleFavorite: _toggleFavorite),
       const NotificationScreen(),
     ];
 

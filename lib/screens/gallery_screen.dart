@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/place_detail.dart';
 
 class GalleryScreen extends StatefulWidget {
   final Function(Map<String, String>) toggleFavorite;
@@ -52,7 +53,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
             ? const Center(
                 child: Text(
                   "No images to display",
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                  ),
                 ),
               )
             : GridView.builder(
@@ -79,7 +83,20 @@ class _GalleryScreenState extends State<GalleryScreen> {
     final isFavorite = widget.favorites.any((fav) =>
         fav['title'] == image['title'] && fav['image'] == image['image']);
 
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlaceDetailScreen(
+              title: title,
+              imagePath: imagePath,
+              toggleFavorite: widget.toggleFavorite,
+              favorites: widget.favorites,
+            ),
+          ),
+        );
+      },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         clipBehavior: Clip.antiAlias,
@@ -103,9 +120,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   color: isFavorite ? Colors.red : Colors.white,
                 ),
                 onPressed: () {
-                  setState(() {
-                    widget.toggleFavorite(image);
-                  });
+                  setState(
+                    () {
+                      widget.toggleFavorite(image);
+                    },
+                  );
                 },
               ),
             ),

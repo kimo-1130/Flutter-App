@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/place_detail.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(Map<String, String>) toggleFavorite;
@@ -189,58 +190,78 @@ class _HomeScreenState extends State<HomeScreen> {
         fav['title'] == destination['title'] &&
         fav['image'] == destination['image']);
 
-    return Container(
-      width: 200,
-      margin: const EdgeInsets.only(right: 12),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlaceDetailScreen(
+              title: title,
+              imagePath: imagePath,
+              toggleFavorite:
+                  widget.toggleFavorite, // Pass the toggleFavorite function
+              favorites: widget.favorites, // Pass the favorites list
             ),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: IconButton(
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite ? Colors.red : Colors.white,
+          ),
+        );
+      },
+      child: Container(
+        width: 200,
+        margin: const EdgeInsets.only(right: 12),
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
                 ),
-                onPressed: () {
-                  setState(() {
-                    widget.toggleFavorite(destination);
-                  });
-                },
               ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.black.withOpacity(0.6), Colors.transparent],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
+              Positioned(
+                top: 8,
+                right: 8,
+                child: IconButton(
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.red : Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      widget.toggleFavorite(destination);
+                    });
+                  },
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withOpacity(0.6),
+                        Colors.transparent
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                  ),
+                  child: Text(
+                    title,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-                child: Text(
-                  title,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/place_detail.dart';
 
 class FavoritesScreen extends StatelessWidget {
   final List<Map<String, String>> favorites;
+  final Function(Map<String, String>) toggleFavorite;
 
-  const FavoritesScreen({Key? key, required this.favorites}) : super(key: key);
+  const FavoritesScreen({
+    Key? key,
+    required this.favorites,
+    required this.toggleFavorite,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +40,7 @@ class FavoritesScreen extends StatelessWidget {
           itemCount: favorites.length,
           itemBuilder: (context, index) {
             return _buildFavoriteCard(
+              context,
               theme,
               favorites[index]['title']!,
               favorites[index]['image']!,
@@ -44,42 +51,63 @@ class FavoritesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFavoriteCard(ThemeData theme, String title, String imagePath) {
-    return Container(
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
-              ),
+  Widget _buildFavoriteCard(
+      BuildContext context, ThemeData theme, String title, String imagePath) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlaceDetailScreen(
+              title: title,
+              imagePath: imagePath,
+              toggleFavorite:
+                  toggleFavorite, // Pass the toggleFavorite function
+              favorites: favorites, // Pass the favorites list
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.black.withOpacity(0.6), Colors.transparent],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-                child: Text(
-                  title,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+          ),
+        );
+      },
+      child: Container(
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-          ],
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withOpacity(0.6),
+                        Colors.transparent,
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                  ),
+                  child: Text(
+                    title,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
