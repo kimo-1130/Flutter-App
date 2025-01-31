@@ -134,29 +134,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Explore",
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/gallery');
-                    },
-                    child: Text(
-                      "See All",
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+              child: Text(
+                "Explore",
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -203,7 +186,10 @@ class _HomeScreenState extends State<HomeScreen> {
               favorites: widget.favorites, // Pass the favorites list
             ),
           ),
-        );
+        ).then((_) {
+          setState(() {}); // Refresh HomeScreen when returning
+        });
+        ;
       },
       child: Container(
         width: 200,

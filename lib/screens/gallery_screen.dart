@@ -95,7 +95,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
               favorites: widget.favorites,
             ),
           ),
-        );
+        ).then((_) {
+          setState(() {}); // Refresh HomeScreen when returning
+        });
+        ;
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

@@ -32,14 +32,9 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
   void _toggleFavorite() {
     setState(() {
       isFavorite = !isFavorite;
-      if (isFavorite) {
-        widget
-            .toggleFavorite({'title': widget.title, 'image': widget.imagePath});
-      } else {
-        widget
-            .toggleFavorite({'title': widget.title, 'image': widget.imagePath});
-      }
     });
+
+    widget.toggleFavorite({'title': widget.title, 'image': widget.imagePath});
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/place_detail.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class FavoritesScreen extends StatefulWidget {
   final List<Map<String, String>> favorites;
   final Function(Map<String, String>) toggleFavorite;
 
@@ -11,6 +11,11 @@ class FavoritesScreen extends StatelessWidget {
     required this.toggleFavorite,
   }) : super(key: key);
 
+  @override
+  _FavoritesScreenState createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -37,13 +42,13 @@ class FavoritesScreen extends StatelessWidget {
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
           ),
-          itemCount: favorites.length,
+          itemCount: widget.favorites.length,
           itemBuilder: (context, index) {
             return _buildFavoriteCard(
               context,
               theme,
-              favorites[index]['title']!,
-              favorites[index]['image']!,
+              widget.favorites[index]['title']!,
+              widget.favorites[index]['image']!,
             );
           },
         ),
@@ -62,11 +67,14 @@ class FavoritesScreen extends StatelessWidget {
               title: title,
               imagePath: imagePath,
               toggleFavorite:
-                  toggleFavorite, // Pass the toggleFavorite function
-              favorites: favorites, // Pass the favorites list
+                  widget.toggleFavorite, // Pass the toggleFavorite function
+              favorites: widget.favorites, // Pass the favorites list
             ),
           ),
-        );
+        ).then((_) {
+          setState(() {}); // Refresh HomeScreen when returning
+        });
+        ;
       },
       child: Container(
         child: Card(
