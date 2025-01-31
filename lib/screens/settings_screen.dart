@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart'; // لاستيراد مكتبة واجهات المستخدم
+import 'package:flutter/material.dart';
 
-// تعريف واجهة الإعدادات كـ StatelessWidget لأنها لا تحتاج إلى تغيير الحالة
+// Define the SettingsScreen as a StatelessWidget since it doesn't need to change state
 class SettingsScreen extends StatelessWidget {
-  final Function toggleTheme; // دالة لتبديل الثيم (ليلي/نهاري)
-  final bool isDarkMode; // حالة الثيم (ليلي/نهاري)
-  final String currentLanguage = "ar"; // اللغة الحالية
+  final Function toggleTheme; // Function to toggle the theme (dark/light)
+  final bool isDarkMode; // Current theme state (dark/light)
+  final String currentLanguage = "ar"; // Current language
 
   const SettingsScreen({
     super.key,
@@ -14,55 +14,44 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // التحقق من حالة الثيم (ليلي/نهاري)
+    // Check the current theme state (dark/light)
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(currentLanguage == "ar"
             ? "إعدادات البرنامج"
-            : "Settings"), // عنوان الواجهة بناءً على اللغة
-        centerTitle: true, // محاذاة العنوان في المنتصف
+            : "Settings"), // Title based on the language
+        centerTitle: true, // Center the title
         backgroundColor: isDarkMode
             ? Colors.black
-            : Colors.orange, // لون الشريط العلوي بناءً على حالة الثيم
+            : Colors.orange, // AppBar color based on the theme state
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0), // مسافات داخلية حول المحتوى
+        padding: const EdgeInsets.all(16.0), // Padding around the content
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // عنصر تبديل الوضع الليلي
+            // Dark mode toggle switch
             SwitchListTile(
               title: Text(currentLanguage == "ar"
                   ? "الوضع الليلي"
-                  : "Dark Mode"), // نص العنوان بناءً على اللغة
-              value: isDarkMode, // قيمة التبديل بناءً على حالة الثيم
+                  : "Dark Mode"), // Title text based on the language
+              value: isDarkMode, // Switch value based on the theme state
               onChanged: (bool value) {
-                toggleTheme(); // استدعاء دالة تبديل الثيم عند تغيير التبديل
+                toggleTheme(); // Call the toggleTheme function when the switch is changed
               },
             ),
-            const Divider(), // فاصل بين العناصر
-            // عنصر تغيير اللغة
+            const Divider(), // Divider between items
+            // Language change item
             ListTile(
               title: Text(currentLanguage == "ar"
                   ? "اللغة"
-                  : "Language"), // نص العنوان بناءً على اللغة
+                  : "Language"), // Title text based on the language
               subtitle: Text(currentLanguage == "ar"
                   ? "العربية"
-                  : "English"), // النص الفرعي بناءً على اللغة
+                  : "English"), // Subtitle text based on the language
               onTap: () {},
-            ),
-            const Divider(), // فاصل بين العناصر
-            // عنصر إعدادات الحساب
-            ListTile(
-              title: Text(currentLanguage == "ar"
-                  ? "إعدادات الحساب"
-                  : "Account Settings"), // نص العنوان بناءً على اللغة
-              onTap: () {
-                Navigator.pushNamed(context,
-                    '/accountSettings'); // الانتقال إلى واجهة إعدادات الحساب
-              },
             ),
           ],
         ),

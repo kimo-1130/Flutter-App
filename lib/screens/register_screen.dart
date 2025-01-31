@@ -76,17 +76,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.account_circle,
                       size: 100,
-                      color: theme.colorScheme.primary,
+                      color: Colors.blue,
                     ),
                     const SizedBox(height: 32),
                     Text(
                       "Create Account",
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.primary,
+                        color: Colors.blue,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -162,10 +162,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         "Create Account",
                         style: TextStyle(
-                          color: theme.colorScheme.primary,
+                          color: Colors.blue,
                         ),
                       ),
                     ),
@@ -175,8 +175,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Text(
                         "Back to Login",
                         style: theme.textTheme.bodyLarge?.copyWith(
-                          color: theme.colorScheme.primary,
+                          color: Colors.blue,
                           decoration: TextDecoration.underline,
+                          decorationColor: Colors.blue,
                         ),
                       ),
                     ),

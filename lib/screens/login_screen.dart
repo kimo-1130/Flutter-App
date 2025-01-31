@@ -51,7 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       } catch (e) {
         setState(() {
-          _errorMessage = 'Exception: $e';
+          _errorMessage =
+              'Error: Unable to login. Please check your internet connection and try again.';
         });
       } finally {
         setState(() {
@@ -89,17 +90,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.account_circle,
                       size: 100,
-                      color: theme.colorScheme.primary,
+                      color: Colors.blue,
                     ),
                     const SizedBox(height: 32),
                     Text(
                       "Welcome",
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.primary,
+                        color: Colors.blue,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -173,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           : Text(
                               "Login",
                               style: theme.textTheme.titleLarge?.copyWith(
-                                color: theme.colorScheme.primary,
+                                color: Colors.blue,
                               ),
                             ),
                     ),
@@ -184,8 +185,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         "Create Account",
                         style: theme.textTheme.bodyLarge?.copyWith(
-                          color: theme.colorScheme.primary,
+                          color: Colors.blue,
                           decoration: TextDecoration.underline,
+                          decorationColor: Colors.blue,
                         ),
                       ),
                     ),

@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.white,
           elevation: 0,
           titleTextStyle: TextStyle(
-            color: Colors.black,
+            color: Colors.blue,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
@@ -150,13 +150,17 @@ class _MyAppState extends State<MyApp> {
                       },
                     ),
                     ListTile(
-                      leading: const Icon(Icons.person, color: Colors.blue),
+                      leading: const Icon(Icons.logout, color: Colors.blue),
                       title: Text(
-                        "Account Settings",
+                        "Log out",
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, '/accountSettings');
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/',
+                          (Route<dynamic> route) => false,
+                        );
                       },
                     ),
                   ],
