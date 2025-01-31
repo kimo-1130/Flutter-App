@@ -11,11 +11,15 @@ class FavoritesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Favorites",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         automaticallyImplyLeading: false, // Remove the back button
       ),

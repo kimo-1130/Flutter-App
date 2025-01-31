@@ -1,71 +1,139 @@
-import 'package:flutter/material.dart'; // لاستيراد مكتبة واجهات المستخدم
+import 'package:flutter/material.dart';
 
-class GalleryScreen extends StatelessWidget {
-  // قائمة الصور
-  final List<String> images = [
-    "assets/s.jpg", // مسار الصورة
+class GalleryScreen extends StatefulWidget {
+  final Function(Map<String, String>) toggleFavorite;
+  final List<Map<String, String>> favorites;
+
+  const GalleryScreen({
+    Key? key,
+    required this.toggleFavorite,
+    required this.favorites,
+  }) : super(key: key);
+
+  @override
+  _GalleryScreenState createState() => _GalleryScreenState();
+}
+
+class _GalleryScreenState extends State<GalleryScreen> {
+  final List<Map<String, String>> images = [
+    {'title': 'Tokyo', 'image': 'assets/images/tokyo.jpg'},
+    {'title': 'Thailand', 'image': 'assets/images/thailand.jpg'},
+    {'title': 'Africa', 'image': 'assets/images/africa.jpg'},
+    {'title': 'France', 'image': 'assets/images/france.jpg'},
+    {'title': 'India', 'image': 'assets/images/india.jpg'},
+    {'title': 'Tokyo', 'image': 'assets/images/tokyo.jpg'},
+    {'title': 'Thailand', 'image': 'assets/images/thailand.jpg'},
+    {'title': 'Africa', 'image': 'assets/images/africa.jpg'},
+    {'title': 'France', 'image': 'assets/images/france.jpg'},
+    {'title': 'India', 'image': 'assets/images/india.jpg'},
   ];
-
-  GalleryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // التحقق من حالة الثيم (ليلي/نهاري)
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("معرض الصور"),
-        centerTitle: true,
-        backgroundColor: isDarkMode
-            ? Colors.black
-            : Colors.orange, // لون الشريط العلوي بناءً على حالة الثيم
+        title: Text(
+          "Gallery",
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
+        ),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        elevation: 0,
+        automaticallyImplyLeading: false, // Remove the back button
       ),
-      body: images.isEmpty
-          ? const Center(
-              child: Text(
-                "لا توجد صور لعرضها",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey), // لون النص في حالة عدم وجود صور
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: images.isEmpty
+            ? const Center(
+                child: Text(
+                  "No images to display",
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                ),
+              )
+            : GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: images.length,
+                itemBuilder: (context, index) {
+                  return _buildGalleryCard(
+                    theme,
+                    images[index]['title']!,
+                    images[index]['image']!,
+                  );
+                },
               ),
-            )
-          : GridView.builder(
-              padding: const EdgeInsets.all(16), // مسافات حول الشبكة
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // عدد الأعمدة
-                crossAxisSpacing: 16, // المسافة بين الأعمدة
-                mainAxisSpacing: 16, // المسافة بين الصفوف
+      ),
+    );
+  }
+
+  Widget _buildGalleryCard(ThemeData theme, String title, String imagePath) {
+    final image = {'title': title, 'image': imagePath};
+    final isFavorite = widget.favorites.any((fav) =>
+        fav['title'] == image['title'] && fav['image'] == image['image']);
+
+    return Container(
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => const Center(
+                  child: Icon(Icons.broken_image, size: 50, color: Colors.red),
+                ),
               ),
-              itemCount: images.length, // عدد العناصر في الشبكة
-              itemBuilder: (context, index) {
-                return Card(
-                  color: isDarkMode
-                      ? Colors.grey[900]
-                      : Colors.white, // لون الخلفية بناءً على حالة الثيم
-                  elevation: 4, // ارتفاع الظل
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(15), // نصف قطر الزوايا الدائرية
-                  ),
-                  child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(15), // نصف قطر الزوايا الدائرية
-                    child: Image.asset(
-                      images[index],
-                      fit: BoxFit.cover, // ملائمة الصورة داخل البطاقة
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Center(
-                        child: Icon(Icons.broken_image,
-                            size: 50,
-                            color: Colors
-                                .red), // أيقونة خطأ في حالة عدم تحميل الصورة
-                      ),
-                    ),
-                  ),
-                );
-              },
             ),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.red : Colors.white,
+                ),
+                onPressed: () {
+                  setState(() {
+                    widget.toggleFavorite(image);
+                  });
+                },
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.black.withOpacity(0.6), Colors.transparent],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                child: Text(
+                  title,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -93,7 +93,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
       HomeScreen(toggleFavorite: _toggleFavorite, favorites: favorites),
-      GalleryScreen(),
+      GalleryScreen(toggleFavorite: _toggleFavorite, favorites: favorites),
       FavoritesScreen(favorites: favorites),
       const NotificationScreen(),
     ];
@@ -179,7 +179,10 @@ class _MyAppState extends State<MyApp> {
                 animationCurve: Curves.easeInOut,
               ),
             ),
-        '/gallery': (context) => GalleryScreen(),
+        '/gallery': (context) => GalleryScreen(
+              toggleFavorite: _toggleFavorite,
+              favorites: favorites,
+            ),
         '/notifications': (context) => const NotificationScreen(),
         '/settings': (context) => SettingsScreen(
               toggleTheme: toggleTheme,
