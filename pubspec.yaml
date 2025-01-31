@@ -1,0 +1,35 @@
+name: flutter_app
+description: A new Flutter project.
+
+# يمنع نشر الحزمة بشكل افتراضي
+publish_to: none
+
+# رقم الإصدار والتحديث للتطبيق
+version: 1.0.0+1
+
+# تحديد بيئة الـ SDK
+environment:
+  sdk: ">=2.18.2 <3.0.0"
+
+# الحزم المطلوبة للتطبيق
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  http: ^0.13.5 # تم تحديثه إلى إصدار أحدث
+  google_mobile_ads: ^2.0.0
+
+# الحزم المستخدمة أثناء التطوير
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+# إعدادات Flutter
+flutter:
+  uses-material-design: true
+
+  # تضمين الأصول
+  assets:
+    - assets/images/
+    - assets/
