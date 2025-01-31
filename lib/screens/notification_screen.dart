@@ -53,15 +53,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("الإشعارات"),
-        centerTitle: true,
-        backgroundColor: isDarkMode ? Colors.black : Colors.orange,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete), // رمز زر المسح
-            onPressed: clearNotifications, // استدعاء دالة مسح الإشعارات
+        title: Text(
+          "Favorites",
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
           ),
-        ],
+        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        automaticallyImplyLeading: false, // Remove the back button
       ),
       body: notifications.isEmpty
           ? const Center(
@@ -76,7 +78,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
                     leading: Icon(Icons.notifications,
-                        color: isDarkMode ? Colors.deepOrange : Colors.orange),
+                        color: Colors.blue), // أيقونة الإشعارات
                     title: Text(
                       notifications[index],
                       style: TextStyle(

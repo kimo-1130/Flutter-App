@@ -15,163 +15,105 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-Widget _buildCategoryCard(ThemeData theme, String title, String imagePath) {
-  return Container(
-    width: 150,
-    margin: const EdgeInsets.only(right: 12),
-    padding: const EdgeInsets.all(8.0),
-    decoration: BoxDecoration(
-      color: theme.primaryColor.withOpacity(0.05),
-      borderRadius: BorderRadius.circular(16),
-    ),
-    child: Row(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            imagePath,
-            width: 60,
-            height: 60,
-            fit: BoxFit.cover,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            title,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
 class _HomeScreenState extends State<HomeScreen> {
+  final List<Map<String, String>> destinations = [
+    {'title': 'Tokyo', 'image': 'assets/images/tokyo.jpg'},
+    {'title': 'Thailand', 'image': 'assets/images/thailand.jpg'},
+    {'title': 'Africa', 'image': 'assets/images/africa.jpg'},
+    {'title': 'France', 'image': 'assets/images/france.jpg'},
+    {'title': 'India', 'image': 'assets/images/india.jpg'},
+  ];
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final List<Map<String, String>> destinations = [
-      {'title': 'Tokyo', 'image': 'assets/images/tokyo.jpg'},
-      {'title': 'Thailand', 'image': 'assets/images/thailand.jpg'},
-      {'title': 'Africa', 'image': 'assets/images/africa.jpg'},
-      {'title': 'France', 'image': 'assets/images/france.jpg'},
-      {'title': 'India', 'image': 'assets/images/india.jpg'},
-    ];
-
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Welcome Banner
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    'assets/images/thailand.jpg',
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Positioned(
-                  bottom: 16,
-                  left: 16,
-                  child: Text(
-                    "Welcome to TravelApp",
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black.withOpacity(0.7),
-                          offset: Offset(0, 2),
-                          blurRadius: 4,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 26),
-            // Categories
-
-            // Popular places
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Text(
-                "Popular places",
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              height: 250,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: destinations.length,
-                itemBuilder: (context, index) {
-                  return _buildDestinationCard(
-                    theme,
-                    destinations[index]['title']!,
-                    destinations[index]['image']!,
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Text(
-                "Explore",
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              height: 250,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: destinations.length,
-                itemBuilder: (context, index) {
-                  return _buildDestinationCard(
-                    theme,
-                    destinations[index]['title']!,
-                    destinations[index]['image']!,
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildWelcomeBanner(theme),
+              const SizedBox(height: 26),
+              _buildSectionTitle(theme, "Popular Places"),
+              _buildDestinationList(),
+              const SizedBox(height: 30),
+              _buildSectionTitle(theme, "Explore"),
+              _buildDestinationList(),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildDestinationCard(
-      ThemeData theme, String title, String imagePath) {
-    final destination = {'title': title, 'image': imagePath};
-    final isFavorite = widget.favorites.any((fav) =>
-        fav['title'] == destination['title'] &&
-        fav['image'] == destination['image']);
+  Widget _buildWelcomeBanner(ThemeData theme) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.asset(
+            'assets/images/france.jpg',
+            width: double.infinity,
+            height: 220,
+            fit: BoxFit.cover,
+          ),
+        ),
+        Positioned(
+          bottom: 20,
+          left: 20,
+          child: Text(
+            "Welcome to TravelApp",
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withOpacity(0.7),
+                  offset: Offset(0, 2),
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionTitle(ThemeData theme, String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        title,
+        style: theme.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDestinationList() {
+    return SizedBox(
+      height: 260,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: destinations.length,
+        itemBuilder: (context, index) {
+          return _buildDestinationCard(
+            destinations[index]['title']!,
+            destinations[index]['image']!,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDestinationCard(String title, String imagePath) {
+    final isFavorite = widget.favorites.any((fav) => fav['title'] == title);
 
     return GestureDetector(
       onTap: () {
@@ -181,22 +123,19 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context) => PlaceDetailScreen(
               title: title,
               imagePath: imagePath,
-              toggleFavorite:
-                  widget.toggleFavorite, // Pass the toggleFavorite function
-              favorites: widget.favorites, // Pass the favorites list
+              toggleFavorite: widget.toggleFavorite,
+              favorites: widget.favorites,
             ),
           ),
-        ).then((_) {
-          setState(() {}); // Refresh HomeScreen when returning
-        });
-        ;
+        ).then((_) => setState(() {}));
       },
       child: Container(
         width: 200,
         margin: const EdgeInsets.only(right: 12),
         child: Card(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 5,
           clipBehavior: Clip.antiAlias,
           child: Stack(
             children: [
@@ -216,7 +155,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   onPressed: () {
                     setState(() {
-                      widget.toggleFavorite(destination);
+                      widget
+                          .toggleFavorite({'title': title, 'image': imagePath});
                     });
                   },
                 ),
@@ -226,11 +166,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Colors.black.withOpacity(0.6),
+                        Colors.black.withOpacity(0.7),
                         Colors.transparent
                       ],
                       begin: Alignment.bottomCenter,
@@ -239,10 +179,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Text(
                     title,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                   ),
                 ),
               ),
