@@ -36,22 +36,32 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-          ),
-          itemCount: widget.favorites.length,
-          itemBuilder: (context, index) {
-            return _buildFavoriteCard(
-              context,
-              theme,
-              widget.favorites[index]['title']!,
-              widget.favorites[index]['image']!,
-            );
-          },
-        ),
+        child: widget.favorites.isEmpty
+            ? Center(
+                child: Text(
+                  "No favorites yet!",
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+              )
+            : GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: widget.favorites.length,
+                itemBuilder: (context, index) {
+                  return _buildFavoriteCard(
+                    context,
+                    theme,
+                    widget.favorites[index]['title']!,
+                    widget.favorites[index]['image']!,
+                  );
+                },
+              ),
       ),
     );
   }
@@ -74,7 +84,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         ).then((_) {
           setState(() {}); // Refresh HomeScreen when returning
         });
-        ;
       },
       child: Container(
         child: Card(
