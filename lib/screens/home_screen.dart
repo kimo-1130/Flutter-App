@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/place_detail.dart';
+import '../components/build_destination_card.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(Map<String, String>) toggleFavorite;
@@ -103,92 +104,15 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: destinations.length,
         itemBuilder: (context, index) {
-          return _buildDestinationCard(
-            destinations[index]['title']!,
-            destinations[index]['image']!,
+          return DestinationCard(
+            title: destinations[index]['title']!,
+            imagePath: destinations[index]['image']!,
+            isFavorite: widget.favorites.any((fav) =>
+                fav['title'] == destinations[index]['title'] &&
+                fav['image'] == destinations[index]['image']),
+            toggleFavorite: widget.toggleFavorite,
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildDestinationCard(String title, String imagePath) {
-    final isFavorite = widget.favorites.any((fav) => fav['title'] == title);
-
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PlaceDetailScreen(
-              title: title,
-              imagePath: imagePath,
-              toggleFavorite: widget.toggleFavorite,
-              favorites: widget.favorites,
-            ),
-          ),
-        ).then((_) => setState(() {}));
-      },
-      child: Container(
-        width: 200,
-        margin: const EdgeInsets.only(right: 12),
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 5,
-          clipBehavior: Clip.antiAlias,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: IconButton(
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : Colors.white,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      widget
-                          .toggleFavorite({'title': title, 'image': imagePath});
-                    });
-                  },
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(12.0),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withOpacity(0.7),
-                        Colors.transparent
-                      ],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                    ),
-                  ),
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
