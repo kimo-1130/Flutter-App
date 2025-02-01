@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/place_detail.dart';
 
 class FavoritesScreen extends StatefulWidget {
-  final List<Map<String, String>> favorites;
-  final Function(Map<String, String>) toggleFavorite;
+  final List<Map<String, String>> favorites; // List of favorite items
+  final Function(Map<String, String>)
+      toggleFavorite; // Function to toggle favorite status
 
   const FavoritesScreen({
     Key? key,
@@ -18,7 +19,7 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = Theme.of(context); // Get the current theme
 
     return Scaffold(
       appBar: AppBar(
@@ -27,10 +28,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           style: TextStyle(
             color: theme.brightness == Brightness.dark
                 ? Colors.white
-                : Colors.black,
+                : Colors.black, // Set text color based on theme
           ),
         ),
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor:
+            theme.scaffoldBackgroundColor, // Set AppBar background color
         elevation: 0,
         automaticallyImplyLeading: false, // Remove the back button
       ),

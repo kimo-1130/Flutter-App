@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/place_detail.dart';
 
 class HomeScreen extends StatefulWidget {
-  final Function(Map<String, String>) toggleFavorite;
-  final List<Map<String, String>> favorites;
+  final Function(Map<String, String>)
+      toggleFavorite; // Function to toggle favorite status
+  final List<Map<String, String>> favorites; // List of favorite items
 
   const HomeScreen({
     Key? key,
@@ -26,22 +27,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = Theme.of(context); // Get the current theme
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor:
+          theme.scaffoldBackgroundColor, // Set background color based on theme
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildWelcomeBanner(theme),
+              _buildWelcomeBanner(theme), // Build the welcome banner
               const SizedBox(height: 26),
-              _buildSectionTitle(theme, "Popular Places"),
-              _buildDestinationList(),
+              _buildSectionTitle(
+                  theme, "Popular Places"), // Build the section title
+              _buildDestinationList(), // Build the destination list
               const SizedBox(height: 30),
-              _buildSectionTitle(theme, "Explore"),
-              _buildDestinationList(),
+              _buildSectionTitle(
+                  theme, "Explore"), // Build another section title
+              _buildDestinationList(), // Build another destination list
             ],
           ),
         ),
@@ -53,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16), // Set border radius
           child: Image.asset(
             'assets/images/france.jpg',
             width: double.infinity,
@@ -127,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
               favorites: widget.favorites,
             ),
           ),
-        ).then((_) => setState(() {}));
+        ).then((_) => setState(() {})); // Refresh HomeScreen when returning
       },
       child: Container(
         width: 200,
