@@ -132,6 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       style: theme.textTheme.bodyLarge,
                       validator: (value) {
@@ -152,6 +156,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: "Password",
                         prefixIcon: const Icon(Icons.lock),
                         border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),

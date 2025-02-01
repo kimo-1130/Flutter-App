@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/place_detail.dart';
 import '../components/build_destination_card.dart';
 
 class HomeScreen extends StatefulWidget {
