@@ -9,7 +9,7 @@ import 'screens/settings_screen.dart';
 import 'screens/favorites_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp()); // Entry point of the app
 }
 
 class MyApp extends StatefulWidget {
@@ -20,19 +20,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool isDarkMode = false;
-  int _selectedIndex = 0;
-  final List<Map<String, String>> favorites = [];
+  bool isDarkMode = false; // State to track dark mode
+  int _selectedIndex = 0; // State to track selected bottom navigation index
+  final List<Map<String, String>> favorites =
+      []; // List to store favorite items
 
   void toggleTheme() {
     setState(() {
-      isDarkMode = !isDarkMode;
+      isDarkMode = !isDarkMode; // Toggle dark mode state
     });
   }
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Update selected index
     });
   }
 

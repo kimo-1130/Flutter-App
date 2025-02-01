@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import '../screens/place_detail.dart';
 
 class GalleryScreen extends StatefulWidget {
-  final Function(Map<String, String>) toggleFavorite;
-  final List<Map<String, String>> favorites;
+  final Function(Map<String, String>)
+      toggleFavorite; // Function to toggle favorite status
+  final List<Map<String, String>> favorites; // List of favorite items
 
   const GalleryScreen({
     Key? key,
@@ -31,7 +32,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = Theme.of(context); // Get the current theme
 
     return Scaffold(
       appBar: AppBar(
@@ -40,10 +41,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
           style: TextStyle(
             color: theme.brightness == Brightness.dark
                 ? Colors.white
-                : Colors.black,
+                : Colors.black, // Set text color based on theme
           ),
         ),
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor:
+            theme.scaffoldBackgroundColor, // Set AppBar background color
         elevation: 0,
         automaticallyImplyLeading: false, // Remove the back button
       ),
@@ -98,7 +100,6 @@ class _GalleryScreenState extends State<GalleryScreen> {
         ).then((_) {
           setState(() {}); // Refresh HomeScreen when returning
         });
-        ;
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

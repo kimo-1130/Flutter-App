@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatefulWidget {
-  final VoidCallback toggleTheme;
-  final bool isDarkMode;
+  final VoidCallback toggleTheme; // Function to toggle the theme (dark/light)
+  final bool isDarkMode; // Current theme state (dark/light)
 
   const RegisterScreen({
     Key? key,
@@ -17,11 +17,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(); // Form key for validation
 
   Future<void> _register(BuildContext context, String fullName, String email,
       String password) async {
-    final url = Uri.parse('https://jsonplaceholder.typicode.com/posts');
+    final url =
+        Uri.parse('https://jsonplaceholder.typicode.com/posts'); // API endpoint
 
     try {
       final response = await http.post(
@@ -35,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (response.statusCode == 201) {
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/home'); // Navigate to home on success
       } else {
         // handle unsuccessful response
       }

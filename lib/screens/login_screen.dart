@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
-  final VoidCallback toggleTheme;
-  final bool isDarkMode;
+  final VoidCallback toggleTheme; // Function to toggle the theme (dark/light)
+  final bool isDarkMode; // Current theme state (dark/light)
 
   const LoginScreen({
     Key? key,
@@ -19,9 +19,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
-  String? _errorMessage;
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(); // Form key for validation
+  bool _isLoading = false; // State to track loading state
+  String? _errorMessage; // State to track error messages
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
@@ -30,7 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
         _errorMessage = null;
       });
 
-      final url = Uri.parse('https://jsonplaceholder.typicode.com/posts');
+      final url = Uri.parse(
+          'https://jsonplaceholder.typicode.com/posts'); // API endpoint
 
       try {
         final response = await http.post(
@@ -43,7 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         if (response.statusCode == 201) {
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(
+              context, '/home'); // Navigate to home on success
         } else {
           setState(() {
             _errorMessage = 'Error: ${response.statusCode}';

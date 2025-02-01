@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class SettingsScreen extends StatelessWidget {
   final Function toggleTheme; // Function to toggle the theme (dark/light)
   final bool isDarkMode; // Current theme state (dark/light)
-  final String currentLanguage = "ar"; // Current language
 
   const SettingsScreen({
     super.key,
@@ -14,18 +13,15 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Check the current theme state (dark/light)
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context); // Get the current theme
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(currentLanguage == "ar"
-            ? "إعدادات البرنامج"
-            : "Settings"), // Title based on the language
+        title: const Text("Settings"), // Title in English
         centerTitle: true, // Center the title
-        backgroundColor: isDarkMode
-            ? Colors.black
-            : Colors.orange, // AppBar color based on the theme state
+        backgroundColor: theme
+            .appBarTheme.backgroundColor, // AppBar color based on the theme
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0), // Padding around the content
@@ -34,9 +30,7 @@ class SettingsScreen extends StatelessWidget {
           children: [
             // Dark mode toggle switch
             SwitchListTile(
-              title: Text(currentLanguage == "ar"
-                  ? "الوضع الليلي"
-                  : "Dark Mode"), // Title text based on the language
+              title: const Text("Dark Mode"), // Title text in English
               value: isDarkMode, // Switch value based on the theme state
               onChanged: (bool value) {
                 toggleTheme(); // Call the toggleTheme function when the switch is changed
@@ -45,12 +39,8 @@ class SettingsScreen extends StatelessWidget {
             const Divider(), // Divider between items
             // Language change item
             ListTile(
-              title: Text(currentLanguage == "ar"
-                  ? "اللغة"
-                  : "Language"), // Title text based on the language
-              subtitle: Text(currentLanguage == "ar"
-                  ? "العربية"
-                  : "English"), // Subtitle text based on the language
+              title: const Text("Language"), // Title text in English
+              subtitle: const Text("English"), // Subtitle text in English
               onTap: () {},
             ),
           ],
